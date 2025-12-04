@@ -11,22 +11,45 @@ const ops = dataops.map(d => {
   return n * dir
 })
 
-let key = 0
-let current = 50
+let one = {
+  key: 0, curr: 50,
+  process: function(op) {
+    let n = op % WINDOW
+    if (n + this.curr >= WINDOW || n + this.curr < 0) {
+      n = n < 0 ? n + WINDOW : n - WINDOW
+    }
+    this.curr += n
+    if (this.curr === 0) {
+      this.key++
+    }
+  }
+}
+
+let two = {
+  key: 0, curr: 50,
+  process: function(op) {
+    this.key += Math.floor(Math.abs(op) / WINDOW)
+    let adj = Math.floor(Math.abs(op) / WINDOW)
+    let n = op % WINDOW
+    if (n + this.curr >= WINDOW || n + this.curr < 0) {
+      n = n < 0 ? n + WINDOW : n - WINDOW
+      this.key++
+      if (count < 10) console.log("add 1 ", "pass 0")
+    }
+    this.curr += n
+    if (this.curr === 0) {
+      this.key++
+      if (count < 10) console.log("add 1 ", 0)
+    }
+  }
+}
+
 ops.forEach(o => {
-  let n = o % WINDOW
-  let str = `curr: ${current}; ${o} => ${n}; `
-  if (n + current >= WINDOW || n + current < 0) {
-    n = n < 0 ? n + WINDOW : n - WINDOW
-    str += `adj => ${n}; ` 
-  }
-  current += n
-  str += `final: ${current}`
-  if (current === 0) {
-    key++
-    str += ` MATCH`
-  }
+  one.process(o)
+  two.process(o)
 })
 
-console.log(key)
+
+console.log(one)
+console.log(two)
 
